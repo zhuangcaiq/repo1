@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcq.dao.StudentDao">
+
+    <sql id="selectSql"> select id,name,email,age from student</sql>
+
+    <select id="selectMultiParam" resultType="com.zcq.domain.Student">
+        <include refid="selectSql"/> where name=#{myname} or age=#{age};
+    </select>
+
+    <select id="selectStudentCount" resultType="int">
+        select count(*) from student;
+    </select>
+
+    <resultMap id="myStudent" type="com.zcq.domain.MyStudent">
+        <id column="id" property="stuid"/>
+        <result column="name" property="stuname"/>
+        <result column="email" property="stuemail"/>
+        <result column="age" property="stuage"/>
+    </resultMap>
+    <select id="selectMyStudent" resultMap="myStudent">
+        select id,name,email,age from student where age=#{stuage};
+    </select>
+
+    <select id="selectOneStudent" resultType="java.util.HashMap">
+        select id,name,email,age from student where id=#{id};
+    </select>
+
+    <select id="selectLikeStudent" resultType="com.zcq.domain.Student">
+        select * from student where name like #{name};
+    </select>
+
+    <insert id="insertStudent">
+        insert into student values (#{id},#{name},#{email},#{age});
+    </insert>
+
+    <select id="selectStudentWhere" resultType="com.zcq.domain.Student">
+        select * from student
+        <where>
+            <if test="name != null and name != ''">
+                name=#{name}
+            </if>
+            <if test="age > 0">
+                or age > #{age}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectStudentForeach" resultType="com.zcq.domain.Student">
+        select * from student where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectAllStudents" resultType="com.zcq.domain.Student">
+        <include refid="selectSql"/> order by id
+    </select>
+</mapper>
