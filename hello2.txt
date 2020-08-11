@@ -5,3 +5,4 @@ llllllllllllllllllllllllllllllllllllllllllllllll
 ooooooooooooooooooo
 22222222222222222222
 在不同的本地仓库再次修改hello2
+updata hello2 from clone-repo
